@@ -20,9 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
-
-
 public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;

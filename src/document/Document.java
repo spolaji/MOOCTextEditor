@@ -5,7 +5,10 @@ package document;
  * @author UC San Diego Intermediate Programming MOOC team
  */
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +70,24 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 2) and 
 	    // EfficientDocument (module 3).
-	    return 0;
+		int count = 0;
+		List<Character> vowels = Arrays.asList('a','e','i','o','u','y');
+		Set<Character> set = new HashSet<Character>();
+		word = word.toLowerCase();
+		char charAtIndex;
+		for(int i = 0; i < word.length(); i++) {
+			charAtIndex = word.charAt(i);
+			if(vowels.contains(charAtIndex)) {
+				if(!(set.size() > 0 && charAtIndex == 'e' && i == word.length() -1))
+					set.add(charAtIndex);
+			}	
+			
+			if(set.contains(charAtIndex)) {
+				// to do
+			}
+		}
+		System.out.println(set.toString());
+	    return set.size();
 	}
 	
 	/** A method for testing
