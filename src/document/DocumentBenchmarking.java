@@ -3,6 +3,7 @@ package document;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.time.*;
 
 /** A class for timing the EfficientDocument and BasicDocument classes
  * 
@@ -17,7 +18,7 @@ public class DocumentBenchmarking {
 
 	    // Run each test more than once to get bigger numbers and less noise.
 	    // You can try playing around with this number.
-	    int trials = 100;
+	    int trials = 1;
 
 	    // The text to test on
 	    String textfile = "data/warAndPeace.txt";
@@ -37,6 +38,7 @@ public class DocumentBenchmarking {
 		// TODO: Fill in the rest of this method so that it runs two loops
 		// and prints out timing results as described in the assignment 
 		// instructions and following the pseudocode below.
+		System.out.print("size" + "\t" +"BasicDocument" + "\t" + "EfficientDocument");
 		for (int numToCheck = start; numToCheck < numSteps*increment + start; 
 				numToCheck += increment)
 		{
@@ -58,7 +60,34 @@ public class DocumentBenchmarking {
 			 * 6. Print out the time it took to complete the loop in step 5 
 			 *      (on the same line as the first print statement) followed by a newline (\n) 
 			 */  
+			 //System.out.print("size" + "\t" +"BasicDocument" + "\t" + "EfficientDocument");
+			 System.out.println();
+			 String testString = getStringFromFile(textfile, numToCheck);
+			 LocalTime startTime1 = LocalTime.now();
+			 while ( trials > 0) {
+				 BasicDocument basic = new BasicDocument(testString);
+				 basic.getFleschScore();
+				 trials--;
+			 }
+			 LocalTime endTime1 = LocalTime.now();
+			 Duration timediff1 = Duration.between(startTime1, endTime1);
+			 double diff1 = timediff1.toMillis();
 			 
+			 trials = 100;
+			 LocalTime startTime2 = LocalTime.now();
+			 while ( trials > 0) {
+				 EfficientDocument efficient = new EfficientDocument(testString);	
+				 efficient.getFleschScore();
+				 trials--;
+				 
+			 }
+			 LocalTime endTime2 = LocalTime.now();
+			 Duration timediff2 = Duration.between(startTime2, endTime2);
+			 double diff2 = timediff2.toMillis();
+			 System.out.print(numToCheck + "\t" + diff1 + "\t\t" + diff2);
+			 System.out.println();
+			 
+			 trials = 100;
 		}
 	
 	}

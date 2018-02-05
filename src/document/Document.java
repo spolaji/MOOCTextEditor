@@ -65,29 +65,28 @@ public abstract class Document {
 	 *       is not considered a syllable unless the word has no other syllables. 
 	 *       You should consider y a vowel.
 	 */
-	protected int countSyllables(String word)
-	{
-		// TODO: Implement this method so that you can call it from the 
-	    // getNumSyllables method in BasicDocument (module 2) and 
-	    // EfficientDocument (module 3).
-		int count = 0;
-		List<Character> vowels = Arrays.asList('a','e','i','o','u','y');
-		Set<Character> set = new HashSet<Character>();
-		word = word.toLowerCase();
-		char charAtIndex;
-		for(int i = 0; i < word.length(); i++) {
-			charAtIndex = word.charAt(i);
-			if(vowels.contains(charAtIndex)) {
-				if(!(set.size() > 0 && charAtIndex == 'e' && i == word.length() -1))
-					set.add(charAtIndex);
-			}	
-			
-			if(set.contains(charAtIndex)) {
-				// to do
+	protected int countSyllables(String word) {
+	    //System.out.print("Counting syllables in " + word + "...");
+		int numSyllables = 0;
+		boolean newSyllable = true;
+		String vowels = "aeiouy";
+		char[] cArray = word.toCharArray();
+		for (int i = 0; i < cArray.length; i++)
+		{
+		    if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e' 
+		    		&& newSyllable && numSyllables > 0) {
+                numSyllables--;
+            }
+		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+				newSyllable = false;
+				numSyllables++;
+			}
+			else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
+				newSyllable = true;
 			}
 		}
-		System.out.println(set.toString());
-	    return set.size();
+		//System.out.println( "found " + numSyllables);
+		return numSyllables;
 	}
 	
 	/** A method for testing
@@ -106,6 +105,10 @@ public abstract class Document {
 		int syllFound = doc.getNumSyllables();
 		int wordsFound = doc.getNumWords();
 		int sentFound = doc.getNumSentences();
+		double fleschScore = 0.0;
+		if(wordsFound !=0 && sentFound != 0)
+			fleschScore = doc.getFleschScore();
+		System.out.println("syllFound: "+syllFound +" wordsFound: "+wordsFound +" sentFound: "+sentFound+" fleschScore is.."+fleschScore);
 		if (syllFound != syllables) {
 			System.out.println("\nIncorrect number of syllables.  Found " + syllFound 
 					+ ", expected " + syllables);
@@ -152,7 +155,8 @@ public abstract class Document {
 	{
 	    // TODO: You will play with this method in week 1, and 
 		// then implement it in week 2
-	    return 0.0;
+	    double fleschScore = 206.835 - 1.015*(getNumWords() / getNumSentences()) - 84.6 * (getNumSyllables() / getNumWords());
+		return fleschScore;
 	}
 	
 	
